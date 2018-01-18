@@ -166,7 +166,6 @@ function ajaxify(jsonResponse, update, updateStrategy, effect) {
     $(document).trigger('ajax.success.before', jsonResponse);
 
     if (typeof jsonResponse === 'object') {
-        console.log(typeof jsonResponse);
         handleJson(jsonResponse, update, updateStrategy);
     } else {
         if (effect != undefined && effect != null) {
