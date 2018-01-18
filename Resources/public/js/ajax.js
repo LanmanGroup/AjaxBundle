@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     //Initialize a loader
     if (window.loader == undefined) {
         window.loader = '<div id="canvasloader-container" ><img src="/bundles/troopersajax/img/three-dots.svg" style="width: 80%; padding-top: 15px;"/></div>';
@@ -25,10 +25,9 @@ $(document).ready(function() {
     });
 
     $(document).trigger('ajax_button_listener_initialized');
-    $('*[data-ab-toggle="ajax"]').each(function() {
+    $('*[data-ab-toggle="ajax"]').each(function () {
         $(this).css({
-            'pointer-events' : 'auto',
-            'cursor' : 'auto'
+            'pointer-events': 'auto',
         });
     });
 });
@@ -36,29 +35,28 @@ $(document).ready(function() {
 /**
  * Keep scroll position after replacing content
  */
-$(document).ajaxStart(function() {
+$(document).ajaxStart(function () {
     scrollTop = $(document).scrollTop();
 });
 
-$(document).ajaxSuccess(function() {
+$(document).ajaxSuccess(function () {
     if (typeof scrollTop != 'undefined') {
         $(document).scrollTop(scrollTop);
     }
 });
 
-$(document).ajaxComplete(function() {
-    $('*[data-ab-toggle="ajax"]').each(function() {
+$(document).ajaxComplete(function () {
+    $('*[data-ab-toggle="ajax"]').each(function () {
         $(this).css({
-            'pointer-events' : 'auto',
-            'cursor' : 'auto'
+            'pointer-events': 'auto',
         });
     });
 });
-$(document).on('submit', 'form[data-ab-toggle="ajax"]', function(event) {
-    if($(this).hasClass('confirm') || $(this).hasClass('confirm-waiting')){
+$(document).on('submit', 'form[data-ab-toggle="ajax"]', function (event) {
+    if ($(this).hasClass('confirm') || $(this).hasClass('confirm-waiting')) {
         return false;
     }
-    $wrapper.fadeIn();
+    $wrapper.show();
     event.preventDefault();
     $(this).trigger('ajax.form.initialize');
     //Guess what is the target to update
@@ -74,11 +72,11 @@ $(document).on('submit', 'form[data-ab-toggle="ajax"]', function(event) {
     ajaxFormSubmit(form, $(form).attr('action'), update, updateStrategy, effect);
 
     return false;
-}).on('click', 'a[data-ab-toggle="ajax"]', function(event) {
-    if($(this).hasClass('confirm') || $(this).hasClass('confirm-waiting')){
+}).on('click', 'a[data-ab-toggle="ajax"]', function (event) {
+    if ($(this).hasClass('confirm') || $(this).hasClass('confirm-waiting')) {
         return false;
     }
-    $wrapper.fadeIn();
+    $wrapper.show();
     event.preventDefault();
 
     //is the link linked ot a form
@@ -114,7 +112,7 @@ function ajaxFormSubmit(form, action, update, updateStrategy, effect) {
     var formData = $(form).serializeArray();
     var formCache = $(form).attr('data-ab-cache') != 'undefined' ? true : false;
     if (button.length) {
-        formData.push({ name: button.attr('name'), value: button.attr('value') });
+        formData.push({name: button.attr('name'), value: button.attr('value')});
     }
     formData = $.param(formData);
     var contentType = 'application/x-www-form-urlencoded; charset=UTF-8';
@@ -126,15 +124,15 @@ function ajaxFormSubmit(form, action, update, updateStrategy, effect) {
 
 
     $.ajax({
-        url         : action,
-        context     : document.body,
-        data        : formData,
-        type        : $(form).attr('method'),
-        contentType : contentType,
-        processData : false,
-        async       : true,
-        cache       : formCache,
-        success     : function(jsonResponse) {
+        url: action,
+        context: document.body,
+        data: formData,
+        type: $(form).attr('method'),
+        contentType: contentType,
+        processData: false,
+        async: true,
+        cache: formCache,
+        success: function (jsonResponse) {
             ajaxify(jsonResponse, update, updateStrategy, effect);
         }
     });
@@ -142,15 +140,15 @@ function ajaxFormSubmit(form, action, update, updateStrategy, effect) {
     $(form).trigger('ajax.ajaxFormSubmit.after');
 }
 
-function ajaxLink(link,update, updateStrategy, effect) {
+function ajaxLink(link, update, updateStrategy, effect) {
     $.ajax({
-        url     : link,
-        context : document.body,
-        type    : "GET",
-        success : function(jsonResponse) {
+        url: link,
+        context: document.body,
+        type: "GET",
+        success: function (jsonResponse) {
             ajaxify(jsonResponse, update, updateStrategy, effect);
         },
-        error: function(jsonResponse) {
+        error: function (jsonResponse) {
             if (typeof toastr === 'undefined') {
                 alert("Il semble s'être produit une erreur");
             } else {
@@ -159,7 +157,7 @@ function ajaxLink(link,update, updateStrategy, effect) {
                 }
                 toastr.error("Il semble s'être produit une erreur");
             }
-            $wrapper.fadeOut();
+            $wrapper.hide();
         }
     });
 }
@@ -168,25 +166,25 @@ function ajaxify(jsonResponse, update, updateStrategy, effect) {
     $(document).trigger('ajax.success.before', jsonResponse);
 
     if (typeof jsonResponse === 'object') {
+        console.log(typeof jsonResponse);
         handleJson(jsonResponse, update, updateStrategy);
     } else {
-        if (effect != undefined && effect != null){
+        if (effect != undefined && effect != null) {
             $("#" + update).hide();
         }
         //By default, the updateStrategy is html (a simple replace) but you can set your own function
         //for example, append, after etc or even a custom one.
         eval('$("#" + update).' + updateStrategy + '(jsonResponse)');
 
-        if (effect != undefined && effect != null){
+        if (effect != undefined && effect != null) {
             eval('$("#" + update).' + effect + '()');
         }
     }
 
-    $wrapper.fadeOut();
-    $('*[data-ab-toggle="ajax"]').each(function() {
+    $wrapper.hide();
+    $('*[data-ab-toggle="ajax"]').each(function () {
         $(this).css({
-            'pointer-events' : 'auto',
-            'cursor' : 'auto'
+            'pointer-events': 'auto',
         });
     });
 
@@ -199,7 +197,7 @@ function handleJson(json, update, updateStrategy, effect) {
         update = json.update;
     }
 
-    if (effect != undefined && effect != null){
+    if (effect != undefined && effect != null) {
         $("#" + update).hide();
     }
 
@@ -207,9 +205,9 @@ function handleJson(json, update, updateStrategy, effect) {
     if (json.hasOwnProperty("ajax-callback")) {
         $.post(json.callback,
             {
-                params : json.data
+                params: json.data
             },
-            function(data){
+            function (data) {
                 eval('$("#" + update).' + updateStrategy + '(data)');
             });
     }
@@ -221,8 +219,8 @@ function handleJson(json, update, updateStrategy, effect) {
     if (json.hasOwnProperty("html")) {
         eval('$("#" + update).' + updateStrategy + '(json.html)');
 
-        if (effect != undefined && effect != null){
-            eval('$("#" + update).'+effect+'()');
+        if (effect != undefined && effect != null) {
+            eval('$("#" + update).' + effect + '()');
         }
     }
     // redirect is an url
