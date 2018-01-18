@@ -2,12 +2,12 @@ $(document).ready(function() {
 
     // Support for AJAX loaded modal window.
     // Focuses on first input textbox after it loads the window.
-    // To use it  : <a href="/url/to/load/modal_window.htm" data-toggle="modal">link</a>
-    $(document).on('click', '[data-toggle="ajax-modal"]', function(e) {
+    // To use it  : <a href="/url/to/load/modal_window.htm" data-ab-toggle="modal">link</a>
+    $(document).on('click', '[data-ab-toggle="ajax-modal"]', function(e) {
         e.preventDefault();
         $('.modal').modal('hide').on('hidden.bs.modal', function(){$(this).remove()});
         var url = $(this).attr('href');
-        var customClass = $(this).attr('data-modal-class') ? $(this).attr('data-modal-class') : '';
+        var customClass = $(this).attr('data-ab-modal-class') ? $(this).attr('data-ab-modal-class') : '';
         if (url.indexOf('#') == 0) {
             $(url).modal('show');
         } else {
@@ -25,7 +25,7 @@ $(document).ready(function() {
         }
     });
 
-    $('*[data-toggle="ajax-modal"]').each(function() {
+    $('*[data-ab-toggle="ajax-modal"]').each(function() {
         $(this).css({
             'pointer-events' : 'auto',
             'cursor' : 'auto'
@@ -34,7 +34,7 @@ $(document).ready(function() {
 });
 
 $(document).ajaxComplete(function() {
-    $('*[data-toggle="ajax-modal"]').each(function() {
+    $('*[data-ab-toggle="ajax-modal"]').each(function() {
         $(this).css({
             'pointer-events' : 'auto',
             'cursor' : 'auto'

@@ -14,18 +14,18 @@ $(document).ready(function() {
     $('body').prepend($wrapper);
 
     /**
-     * The clicked link or button is tagged with data-trigger=true. When a form is submitted,
+     * The clicked link or button is tagged with data-ab-trigger=true. When a form is submitted,
      * we find the tagged element in case it has some data to submit.
      */
-    $(document).on('click', 'form[data-toggle="ajax"] *[type="submit"]', function (event) {
-        $(this).parents('form[data-toggle="ajax"]').first().children('*[type="submit"]').each(function () {
-            $(this).attr('data-trigger', false);
+    $(document).on('click', 'form[data-ab-toggle="ajax"] *[type="submit"]', function (event) {
+        $(this).parents('form[data-ab-toggle="ajax"]').first().children('*[type="submit"]').each(function () {
+            $(this).attr('data-ab-trigger', false);
         });
-        $(this).attr('data-trigger', true);
+        $(this).attr('data-ab-trigger', true);
     });
 
     $(document).trigger('ajax_button_listener_initialized');
-    $('*[data-toggle="ajax"]').each(function() {
+    $('*[data-ab-toggle="ajax"]').each(function() {
         $(this).css({
             'pointer-events' : 'auto',
             'cursor' : 'auto'
@@ -47,14 +47,14 @@ $(document).ajaxSuccess(function() {
 });
 
 $(document).ajaxComplete(function() {
-    $('*[data-toggle="ajax"]').each(function() {
+    $('*[data-ab-toggle="ajax"]').each(function() {
         $(this).css({
             'pointer-events' : 'auto',
             'cursor' : 'auto'
         });
     });
 });
-$(document).on('submit', 'form[data-toggle="ajax"]', function(event) {
+$(document).on('submit', 'form[data-ab-toggle="ajax"]', function(event) {
     if($(this).hasClass('confirm') || $(this).hasClass('confirm-waiting')){
         return false;
     }
@@ -62,10 +62,10 @@ $(document).on('submit', 'form[data-toggle="ajax"]', function(event) {
     event.preventDefault();
     $(this).trigger('ajax.form.initialize');
     //Guess what is the target to update
-    if ($(this).attr('data-target')) {
-        var update = $(this).attr('data-target');
+    if ($(this).attr('data-ab-target')) {
+        var update = $(this).attr('data-ab-target');
     } else if ($(this).data('update')) {
-        console.info('The use of data-update will be deprecated in next version, please use data-target instead.');
+        console.info('The use of data-ab-update will be deprecated in next version, please use data-ab-target instead.');
         var update = $(this).data('update');
     }
     var updateStrategy = $(this).data('update-strategy') ? $(this).data('update-strategy') : 'html';
@@ -74,7 +74,7 @@ $(document).on('submit', 'form[data-toggle="ajax"]', function(event) {
     ajaxFormSubmit(form, $(form).attr('action'), update, updateStrategy, effect);
 
     return false;
-}).on('click', 'a[data-toggle="ajax"]', function(event) {
+}).on('click', 'a[data-ab-toggle="ajax"]', function(event) {
     if($(this).hasClass('confirm') || $(this).hasClass('confirm-waiting')){
         return false;
     }
@@ -86,10 +86,10 @@ $(document).on('submit', 'form[data-toggle="ajax"]', function(event) {
 
     $(this).trigger('ajax.link.initialize');
     //Guess what is the target to update
-    if ($(this).attr('data-target')) {
-        var update = $(this).attr('data-target');
+    if ($(this).attr('data-ab-target')) {
+        var update = $(this).attr('data-ab-target');
     } else if ($(this).data('update')) {
-        console.info('The use of data-update will be deprecated in next version, please use data-target instead.');
+        console.info('The use of data-ab-update will be deprecated in next version, please use data-ab-target instead.');
         var update = $(this).data('update');
     }
     var updateStrategy = $(this).data('update-strategy') ? $(this).data('update-strategy') : 'html';
@@ -109,10 +109,10 @@ $(document).on('submit', 'form[data-toggle="ajax"]', function(event) {
 
 function ajaxFormSubmit(form, action, update, updateStrategy, effect) {
     $(form).trigger('ajax.ajaxFormSubmit.before');
-    var button = $('[type="submit"][data-trigger=true]');
+    var button = $('[type="submit"][data-ab-trigger=true]');
     //grab all form data
     var formData = $(form).serializeArray();
-    var formCache = $(form).attr('data-cache') != 'undefined' ? true : false;
+    var formCache = $(form).attr('data-ab-cache') != 'undefined' ? true : false;
     if (button.length) {
         formData.push({ name: button.attr('name'), value: button.attr('value') });
     }
@@ -183,7 +183,7 @@ function ajaxify(jsonResponse, update, updateStrategy, effect) {
     }
 
     $wrapper.fadeOut();
-    $('*[data-toggle="ajax"]').each(function() {
+    $('*[data-ab-toggle="ajax"]').each(function() {
         $(this).css({
             'pointer-events' : 'auto',
             'cursor' : 'auto'
@@ -241,17 +241,17 @@ function guessEffect(link, targetId) {
     if ($(targetId).html() != undefined) {
         if ($(targetId).html() == "") {
             effect = "slideDown";
-            if ($(link).attr('data-new-effect') != undefined && $(link).attr('data-new-effect') != "") {
-                effect = $(link).attr('data-new-effect');
-            } else if ($(targetId).attr('data-new-effect') != undefined && $(targetId).attr('data-new-effect') != "") {
-                effect = $(targetId).attr('data-new-effect');
+            if ($(link).attr('data-ab-new-effect') != undefined && $(link).attr('data-ab-new-effect') != "") {
+                effect = $(link).attr('data-ab-new-effect');
+            } else if ($(targetId).attr('data-ab-new-effect') != undefined && $(targetId).attr('data-ab-new-effect') != "") {
+                effect = $(targetId).attr('data-ab-new-effect');
             }
         } else {
             effect = "fadeIn";
-            if ($(link).attr('data-update-effect') != undefined && $(link).attr('data-update-effect') != "") {
-                effect = $(link).attr('data-update-effect');
-            } else if ($(targetId).attr('data-update-effect') != undefined && $(targetId).attr('data-update-effect') != "") {
-                effect = $(targetId).attr('data-update-effect');
+            if ($(link).attr('data-ab-update-effect') != undefined && $(link).attr('data-ab-update-effect') != "") {
+                effect = $(link).attr('data-ab-update-effect');
+            } else if ($(targetId).attr('data-ab-update-effect') != undefined && $(targetId).attr('data-ab-update-effect') != "") {
+                effect = $(targetId).attr('data-ab-update-effect');
             }
         }
     } else if ($(link).data('no-effect')) {
