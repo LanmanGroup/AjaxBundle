@@ -1,9 +1,9 @@
-// For every change on inputs and select with attr data-ab-refreshOnChange
+// For every change on inputs and select with attr data-refreshOnChange
 $(document).on(
     'change',
-    'select[data-ab-refreshOnChange="true"], ' +
-    'input:checkbox[data-ab-refreshOnChange="true"], ' +
-    'input:radio[data-ab-refreshOnChange="true"]',
+    'select[data-refreshOnChange="true"], ' +
+    'input:checkbox[data-refreshOnChange="true"], ' +
+    'input:radio[data-refreshOnChange="true"]',
     function (event) {
         var form = $(this).parents('form');
         var formdata = (window.FormData) ? new FormData(form[0]) : null;
@@ -13,9 +13,9 @@ $(document).on(
         if ($(this).data('update-strategy')) {
             updateStrategy = $(this).data('update-strategy');
         }
-        $(form).find('[data-ab-ignoreonchange]').each(function (idx, elem) {
+        $(form).find('[data-ignoreonchange]').each(function (idx, elem) {
             var $elem = $(elem);
-            ignoredChanges[$elem.attr('data-ab-ignoreonchange')] = $elem;
+            ignoredChanges[$elem.attr('data-ignoreonchange')] = $elem;
         });
         $.ajax({
             url: form.attr('action') + (form.attr('action').split('?')[1] ? '&' : '?') + 'novalidate',
@@ -31,7 +31,7 @@ $(document).on(
             }
             eval('form.' + updateStrategy + '(newForm)');
             $.each(ignoredChanges, function (index, elem) {
-                $('[data-ab-ignoreonchange="' + index + '"]').replaceWith(elem);
+                $('[data-ignoreonchange="' + index + '"]').replaceWith(elem);
             });
         }).fail(function (response) {
             console.error('Request has failed');

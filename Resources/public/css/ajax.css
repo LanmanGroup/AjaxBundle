@@ -15,14 +15,14 @@
     border-radius: 5px;
 }
 
-*[data-ab-toggle="ajax"],
-*[data-ab-toggle="ajax-modal"] {
+*[data-toggle="ajax"],
+*[data-toggle="ajax-modal"] {
     pointer-events: none;
 }
 
 /* Hinclude workaround because it does not trigger ajaxComplete event */
-[class^='include_'] *[data-ab-toggle="ajax"],
-[class^='include_'] *[data-ab-toggle="ajax-modal"] {
+[class^='include_'] *[data-toggle="ajax"],
+[class^='include_'] *[data-toggle="ajax-modal"] {
     pointer-events: auto;
 }
 
