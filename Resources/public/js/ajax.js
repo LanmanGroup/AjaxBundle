@@ -166,7 +166,7 @@ function ajaxify(jsonResponse, update, updateStrategy, effect) {
     $(document).trigger('ajax.success.before', jsonResponse);
 
     if (typeof jsonResponse === 'object') {
-        handleJson(jsonResponse, update, updateStrategy);
+        handleJson(jsonResponse, update, updateStrategy, effect);
     } else {
         if (effect != undefined && effect != null) {
             $("#" + update).hide();
