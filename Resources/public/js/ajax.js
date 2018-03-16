@@ -149,13 +149,10 @@ function ajaxLink(link, update, updateStrategy, effect) {
             ajaxify(jsonResponse, update, updateStrategy, effect);
         },
         error: function (jsonResponse) {
-            if (typeof toastr === 'undefined') {
-                alert("Il semble s'être produit une erreur");
+            if (typeof notify === 'undefined') {
+                alert("Oops! Something went wrong! Please try again :(");
             } else {
-                toastr.options = {
-                    "positionClass": "toast-bottom-left",
-                }
-                toastr.error("Il semble s'être produit une erreur");
+                notify("Oops! Something went wrong! Please try again :(","error");
             }
             $wrapper.hide();
         }
